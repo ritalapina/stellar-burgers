@@ -1,67 +1,66 @@
-import { FC, useMemo } from 'react';
+import { FC, useEffect, useMemo } from 'react';
 import { Preloader } from '../ui/preloader';
 import { OrderInfoUI } from '../ui/order-info';
 import { TIngredient } from '@utils-types';
+import { useLocation, useParams } from 'react-router-dom';
+import { useDispatch, useSelector } from '../../services/store';
+import { selectIngredients } from '../../slices/ingredientsSlice';
+import { selectOrders, fetchOrders } from '../../slices/ordersSlice';
+import { fetchFeed, selectFeed, selectLoading } from '../../slices/feedSlice';
 
 export const OrderInfo: FC = () => {
-  /** TODO: взять переменные orderData и ingredients из стора */
-  const orderData = {
-    createdAt: '',
-    ingredients: [],
-    _id: '',
-    status: '',
-    name: '',
-    updatedAt: 'string',
-    number: 0
-  };
+const dispatch = useDispatch();
+const { number } = useParams<{ number: string }>();
+const ingredients = useSelector(selectIngredients);
+const feed = useSelector(selectFeed);
+const orders = useSelector(selectOrders);
+const loading = useSelector(selectLoading);
+const location = useLocation();
 
-  const ingredients: TIngredient[] = [];
+const comesFromProfile = location.pathname.startsWith('/profile');
+const comesFromFeed = location.pathname.startsWith('/feed');
 
-  /* Готовим данные для отображения */
-  const orderInfo = useMemo(() => {
-    if (!orderData || !ingredients.length) return null;
+// Выполняем запрос на получение заказов или ленты в зависимости от источника
+useEffect(() => {
 
-    const date = new Date(orderData.createdAt);
+if (comesFromFeed) {
+dispatch(fetchFeed()); // Получаем ленту, если пришли из страницы ленты
 
-    type TIngredientsWithCount = {
-      [key: string]: TIngredient & { count: number };
-    };
+} else if (comesFromProfile) {
+dispatch(fetchOrders()); // Получаем заказы, если пришли из профиля
 
-    const ingredientsInfo = orderData.ingredients.reduce(
-      (acc: TIngredientsWithCount, item) => {
-        if (!acc[item]) {
-          const ingredient = ingredients.find((ing) => ing._id === item);
-          if (ingredient) {
-            acc[item] = {
-              ...ingredient,
-              count: 1
-            };
-          }
-        } else {
-          acc[item].count++;
-        }
+}
+}, [dispatch, comesFromFeed, comesFromProfile]);
 
-        return acc;
-      },
-      {}
-    );
+// Находим заказ по номеру, который получаем из параметров URL
+const order = (comesFromFeed ? feed.orders : orders).find(i => i.number === Number(number));
 
-    const total = Object.values(ingredientsInfo).reduce(
-      (acc, item) => acc + item.price * item.count,
-      0
-    );
+const orderData = order ? { ...order } : null;
 
-    return {
-      ...orderData,
-      ingredientsInfo,
-      date,
-      total
-    };
-  }, [orderData, ingredients]);
+// Подготавливаем данные для отображения
+const orderInfo = useMemo(() => {
+if (!orderData || !ingredients.length) return null;
 
-  if (!orderInfo) {
-    return <Preloader />;
-  }
+const date = new Date(orderData.createdAt);
+const ingredientsInfo = orderData.ingredients.reduce((acc: Record<string, TIngredient & { count: number }>, item) => {
+const ingredient = ingredients.find(ing => ing._id === item);
+if (ingredient) {
+acc[item] = (acc[item] || { ...ingredient, count: 0 });
+acc[item].count += 1;
+}
+return acc;
+}, {});
 
-  return <OrderInfoUI orderInfo={orderInfo} />;
+const total = Object.values(ingredientsInfo).reduce((acc, { price, count }) => acc + price * count, 0);
+
+return { ...orderData, ingredientsInfo, date, total };
+}, [orderData, ingredients]);
+
+// Если данные загружаются, показываем прелоадер
+if (loading) return <Preloader />;
+// Если информации о заказе нет, возвращаем null
+if (!orderInfo) return null;
+
+// Возвращаем компонент с подготовленной информацией о заказе
+return <OrderInfoUI orderInfo={orderInfo} />;
 };
