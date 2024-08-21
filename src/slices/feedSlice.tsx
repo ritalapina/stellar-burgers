@@ -1,4 +1,4 @@
-import { getFeedsApi, TFeedsResponse } from '@api';
+import { getFeedsApi, TFeedsResponse } from '../utils/burger-api';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { TOrder } from '@utils-types';
 import { RootState } from 'src/services/store';
@@ -11,7 +11,7 @@ interface FeedState {
 }
 
 // Начальное состояние ленты заказов
-const initialState: FeedState = {
+export const initialState: FeedState = {
   feed: { orders: [], total: null, totalToday: null },
   loading: false,
   error: null
@@ -33,7 +33,6 @@ export const feedSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-    // Обработка состояния при ожидании выполнения запроса
       .addCase(fetchFeed.pending, (state) => {
         state.loading = true;
         state.error = null;
