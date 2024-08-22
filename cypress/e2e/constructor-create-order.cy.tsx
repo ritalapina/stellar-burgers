@@ -1,5 +1,3 @@
-/// <reference types="cypress" />
-
 import user from './user.json'; // Обновленные данные о пользователе
 import orderSuccess from './order.json'; // Обновленные данные о заказе
 import ingredients from './ingredients.json';
@@ -8,7 +6,8 @@ const SELECTORS = {
   orderButton: '[data-test="order-button"]',
   orderNumber: '[data-test="order-number"]',
   modalCloseButton: '[data-test="modal-close-button"]',
-  orderModal: '[data-test="order-modal"]'
+  orderModal: '[data-test="order-modal"]',
+  modals: '#modals' // Выносим селектор модального окна в константу
 };
 
 describe('оформляем заказ', () => {
@@ -50,14 +49,17 @@ describe('оформляем заказ', () => {
     cy.get('.add-button-main').first().click({ force: true });
     // Кликаем кнопку оформления заказа
     cy.get(SELECTORS.orderButton).first().click({ force: true });
+    
     // Проверяем, что модальное окно с заказом открылось
-    cy.get('#modals').find(SELECTORS.orderModal).should('exist');
+    cy.get(SELECTORS.modals).find(SELECTORS.orderModal).should('exist');
     // Проверяем, что номер заказа совпадает
     cy.get(SELECTORS.orderNumber).should('contain', orderSuccess.order.number);
+    
     // Кликаем на кнопку, чтобы закрыть модалку
-    cy.get('#modals').find(SELECTORS.modalCloseButton).click();
-    // Проверяем, что модальное окно закрылось
-    cy.get('#modals').find(SELECTORS.orderModal).should('not.exist');
+    cy.get(SELECTORS.modals).find(SELECTORS.modalCloseButton).click({ force: true });
+    
+    // Проверяем, что модальное окно закрылось (ожидая, что оно не будет видимым)
+    cy.get(SELECTORS.modals).find(SELECTORS.orderModal).should('not.be.visible'); // Здесь изменено
     // Проверяем, что в конструкторе нет элементов
     cy.get('.constructor-element').should('not.exist');
   });

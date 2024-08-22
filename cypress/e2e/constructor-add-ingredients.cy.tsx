@@ -2,7 +2,7 @@
 
 import ingredients from './ingredients.json';
 
-describe('добавление булок и начинки', () => {
+describe('проверяем, что при клике в конструктор добавляется булка и начинка', () => {
   beforeEach(() => {
     // мок серверного запроса ингредиентов
     cy.intercept('GET', '**/ingredients', { body: ingredients }).as(
