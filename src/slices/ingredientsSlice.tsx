@@ -1,4 +1,4 @@
-import { getIngredientsApi } from '@api'; // Импорт функции для получения ингредиентов
+import { getIngredientsApi } from './../utils/burger-api';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'; // Импорт необходимых функций из Redux Toolkit
 import { TIngredient } from '@utils-types'; // Импорт типа для ингредиента
 import { RootState } from '../services/store'; // Импорт корневого состояния
@@ -11,7 +11,7 @@ interface IngredientsState {
 }
 
 // Начальное состояние ингредиентов
-const initialState: IngredientsState = {
+export const initialState: IngredientsState = {
   ingredients: [],
   loading: false,
   error: null

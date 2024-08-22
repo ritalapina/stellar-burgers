@@ -1,0 +1,66 @@
+{
+  "success": true,
+  "name": "Фирменный Люминесцентный бургер",
+  "order": {
+    "_id": "d54rgh8d4rg5d",
+    "status": "done",
+    "name": "Фирменный Люминесцентный бургер",
+    "createdAt": "17.08.2024 02:58:06",
+    "updatedAt": "17.08.2024 03:08:01",
+    "number": 66123,
+    "ingredients": [
+      {
+        "_id": "643d69a5c3f7b9001cfa093c",
+        "name": "Краторная булка",
+        "type": "bun",
+        "proteins": 80,
+        "fat": 24,
+        "carbohydrates": 53,
+        "calories": 420,
+        "price": 1255,
+        "image": "https://code.s3.yandex.net/react/code/bun-02.png",
+        "image_mobile": "https://code.s3.yandex.net/react/code/bun-02-mobile.png",
+        "image_large": "https://code.s3.yandex.net/react/code/bun-02-large.png"
+      },
+      {
+        "_id": "643d69a5c3f7b9001cfa093c",
+        "name": "Краторная булка",
+        "type": "bun",
+        "proteins": 80,
+        "fat": 24,
+        "carbohydrates": 53,
+        "calories": 420,
+        "price": 1255,
+        "image": "https://code.s3.yandex.net/react/code/bun-02.png",
+        "image_mobile": "https://code.s3.yandex.net/react/code/bun-02-mobile.png",
+        "image_large": "https://code.s3.yandex.net/react/code/bun-02-large.png"
+      },
+      {
+        "_id": "643d69a5c3f7b9001cfa093e",
+        "name": "Филе Люминесцентного тетраодонтимформа",
+        "type": "main",
+        "proteins": 44,
+        "fat": 26,
+        "carbohydrates": 85,
+        "calories": 643,
+        "price": 988,
+        "image": "https://code.s3.yandex.net/react/code/meat-03.png",
+        "image_mobile": "https://code.s3.yandex.net/react/code/meat-03-mobile.png",
+        "image_large": "https://code.s3.yandex.net/react/code/meat-03-large.png"
+      },
+      {
+        "_id": "643d69a5c3f7b9001cfa0943",
+        "name": "Соус фирменный Space Sauce",
+        "type": "sauce",
+        "proteins": 50,
+        "fat": 22,
+        "carbohydrates": 11,
+        "calories": 14,
+        "price": 80,
+        "image": "https://code.s3.yandex.net/react/code/sauce-04.png",
+        "image_mobile": "https://code.s3.yandex.net/react/code/sauce-04-mobile.png",
+        "image_large": "https://code.s3.yandex.net/react/code/sauce-04-large.png"
+      }
+    ]
+  }
+}

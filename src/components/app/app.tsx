@@ -43,6 +43,10 @@ const App = () => {
     if (!ingredients.length) {
       dispatch(fetchIngredients());
     }
+
+    if (!feed.orders.length) {
+      dispatch(fetchFeed());
+    }
   }, [dispatch]);
 
   const handleCloseModal = () => {
